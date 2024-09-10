@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <meta name='description' content=''>
+        <meta name='author' content='Michael Oko'>
+        <link rel="icon" href="../../favicon.ico">
+
+        <title>Vintage Videos Games</title>
+
+        {% load static %}
+        <link href="{% static 'styles/custom-site.css' %}" rel='stylesheet'>
+        <link href="{% static 'styles/bootstrap.min.css' %}" rel='stylesheet'>
+        <link href="{% static 'styles/font-awesome.min.css' %}" rel='stylesheet'>
+    </head>
+
+    <body>
+        <!--NavBar-->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle 
+                        collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">VVGames</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="/"><i class="fa fa-home" aria-hidden="true"></i> HOME</a>
+                        </li>
+                        {% if user.is_authenticated%}
+                            <li>
+                                <a href="/cart/">
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> CART
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul> 
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+
+        <!--Flashed Messages for errors or notifications-->
+        <div class="container">
+            <div class="starter-template">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-info" role="alert">
+                            {{message}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <!--Block to be overridden by sub templates-->
+                {% block 'content' %}{% endblock %}
+            </div>
+        </div>
+    </body>
+</html>
