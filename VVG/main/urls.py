@@ -4,7 +4,7 @@ from django.contrib.auth.views import(
         LogoutView
 )
 from .forms import(
-        AuthenticationForm
+        AuthenticationForm,
 )
 from . import views
 
@@ -15,7 +15,10 @@ urlpatterns = [
                 'template_name': 'login.html',
                 'authentication_form': AuthenticationForm
         }, name='login'),
+        
         path(r'accounts/logout', LogoutView.as_view(), {
                 #'next_page': '/'
         }, name='logout'),
+        
+        path(r'accounts/register/', views.register, name='register'),
 ]

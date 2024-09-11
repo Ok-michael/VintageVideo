@@ -73,3 +73,41 @@ h2.panel-title {
 .signin-errors-container .form-errors li {
     max-width: 350px;
 }
+
+
+/* Account created page */
+.create-account-msg-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+}
+.create-account-msg-container .circle {
+    width: 200px;
+    height: 200px;
+    border: solid 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+    border-radius: 50%;
+}
+.create-account-msg-container .fa-thumbs-o-up {
+    font-size: 9em;
+}
+.create-account-msg-container a {
+    font-size: 1.5em;
+}
+/* Sign up page */
+.account-details-container #id_password,
+.account-details-container #id_repeat_password {
+    width:200px;
+}
+.account-details-container {
+    max-width: 400px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.account-details-container .btn.btn-primary {
+    margin-top:20px;
+}
