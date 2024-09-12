@@ -21,4 +21,6 @@ urlpatterns = [
         }, name='logout'),
         
         path(r'accounts/register/', views.register, name='register'),
+        path(r'games-list/promoted/', views.show_promoted_games),
+        path(r'games-list/all/', views.show_all_games),
 ]

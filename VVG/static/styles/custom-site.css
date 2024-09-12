@@ -111,3 +111,53 @@ h2.panel-title {
 .account-details-container .btn.btn-primary {
     margin-top:20px;
 }
+
+
+
+
+
+.game-container {
+    margin-top: 10px;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.game-container .item-box {
+    flex-grow: 0;
+    align-self: auto;
+    width:339px;
+    margin: 0px 10px 20px 10px;
+    border: 1px solid #aba5a5;
+    padding: 10px;
+    background-color: #F0F0F0;
+}
+.game-container .item-box .add-to-cart {
+    margin-top: 15px;
+    float: right;
+}
+.game-container .item-box.highlighted {
+    background-color:#d7e7f5;
+}
+.game-container .item-box .item-image {
+    float: left;
+}
+.game-container .item-box .item-info {
+    float: left;
+    margin-left: 15px;
+    width:100%;
+    max-width:170px;
+}
+.game-container .item-box .item-info p {
+    margin: 0 0 3px;
+}
+.game-container .item-box .item-info p.price {
+    font-weight: bold;
+    margin-top: 20px;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+.game-container .item-box .item-info h3 {
+    max-width: 150px;
+    word-wrap: break-word;
+    margin: 0px 0px 10px 0px;
+}

@@ -1,5 +1,30 @@
 {% extends 'base.html' %}
 
 {% block 'content' %}
-    <h3>Hi There, this is Vintage Video Games Store</h3>
-{% endblock 'content' %}
+
+    <!--For the promoted games list-->
+    {% if promoted_games_list %}
+        <div class='panel panel-success'>
+            <div class='panel-heading'>
+                <h2 class='panel-title'>
+                    <i class="fa fa-gamepad" aria-hidden="true"></i>Promoted games
+                </h2>
+            </div>
+            <div class='panel-body'>
+                {% include 'main/games-list.html' with gameslist=promoted_games_list highlight_games=False%}
+                {% if show_more_link_promoted %}
+                    <p><a href='/games-list/promoted/'>See more items</a></p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    <!--For the unpromoted games list-->
+    {% if games_list %}
+        {% include 'main/games-list.html' with gameslist=games_list highlight_games=False%}
+        {% if show_more_link_games %}
+            <p><a href='/games-list/all/'>See all items</a></p>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
