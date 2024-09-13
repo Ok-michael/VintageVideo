@@ -23,4 +23,6 @@ urlpatterns = [
         path(r'accounts/register/', views.register, name='register'),
         path(r'games-list/promoted/', views.show_promoted_games),
         path(r'games-list/all/', views.show_all_games),
+        path(r'cart/', views.ShoppingCartEditView.as_view(), name='user-cart'),
+        path(r'cart/add/<int:game_id>/', views.add_to_cart),
 ]

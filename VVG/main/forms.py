@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from django.forms import inlineformset_factory
+from .models import ShoppingCartItem, ShoppingCart
+
 
 
 class AuthenticationForm(AuthenticationForm):
@@ -114,4 +117,17 @@ class RegistrationForm(forms.Form):
             self.add_error('repeat_password', 'Passwords did not match!')
 
         return cleaned_data
-        
+    
+
+ShoppingCartFormSet = inlineformset_factory(
+    ShoppingCart,
+    ShoppingCartItem,
+    fields=('quantity', 'price_per_unit'),
+    extra=0,
+    widgets={
+        'quantity': forms.TextInput({
+            'class': 'form-control quantity',
+        }),
+        'price_per_unit': forms.HiddenInput()
+    }
+ )

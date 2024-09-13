@@ -3,15 +3,14 @@
 {% block 'content' %}
    <!--  <h3>Hi There, this is Vintage Video Games Store</h3> -->
     <div class="account-details-container">
-        <h1>Register</h1>
+        <h1>Register here!</h1>
         
         <form action="{% url 'register' %}" method="POST">
-        {% csrf_token %}
-        
-        {{ form }}
-        
-        <button class="btn btn-primary">Save</button>
-        
+            {% csrf_token %}
+            
+            {{ form }}
+            
+            <button class="btn btn-primary">Save</button>
         </form>
-        </div>
+    </div>
 {% endblock 'content' %}
