@@ -1,8 +1,8 @@
-.nav.navbar-nav .fa-home,
-.nav.navbar-nav .fa-shopping-cart {
-    font-size: 1.5em;
+.nav.navbar-nav .fa-home, 
+.nav.navbar-nav .fa-shopping-cart, 
+.nav.navbar-nav .fa-truck { 
+    font-size: 1.5em; 
 }
- 
 .starter-template {
     padding: 70px 15px;
 }
@@ -193,4 +193,10 @@ cart-details h3 {
     font-size: 1.4em;
     font-weight: bold;
     margin-left: 10px;
+}
+
+.order-container { 
+    border: 1px solid #000; 
+    margin: 20px; 
+    padding: 10px; 
 }

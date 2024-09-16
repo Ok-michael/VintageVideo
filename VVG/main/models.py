@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from collections import namedtuple
 
 
 class Platform(models.Model):
@@ -103,6 +104,13 @@ class ShoppingCartManager(models.Manager):
     def create_cart(self, user):
         new_cart = self.create(user=user)
         return new_cart
+    
+    def empty(self, cart): 
+        cart_items = ShoppingCartItem.objects.filter( 
+            cart__id=cart.id 
+        ) 
+        for item in cart_items: 
+            item.delete()
 
     
 
@@ -138,3 +146,5 @@ class ShoppingCartItem(models.Model):
     game = models.ForeignKey(
         Game, null=False, on_delete=models.CASCADE
     )
+
+OrderItem = namedtuple('OrderItem', 'name price_per_unit product_id quantity')

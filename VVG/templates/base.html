@@ -42,6 +42,11 @@
                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i> CART
                                 </a>
                             </li>
+                            <li> 
+                                <a href="/my-orders/"> 
+                                  <i class="fa fa-truck" aria-hidden="true"></i> ORDERS 
+                                </a> 
+                            </li>
                         {% endif %}
                     </ul> 
                     {% include '_login-logout.html' %}
@@ -52,13 +57,19 @@
         <!--Flashed Messages for errors or notifications-->
         <div class="container">
             <div class="starter-template">
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-info" role="alert">
-                            {{message}}
-                        </div>
-                    {% endfor %}
-                {% endif %}
+                {% if messages %} 
+                {% for message in messages %} 
+                  {% if message.tags == 'error' %} 
+                    <div class="alert alert-danger" role="alert"> 
+                  {% else %} 
+                    <div class="alert alert-info" role="alert"> 
+                  {% endif %} 
+                  {{message}} 
+                  </div> 
+                {% endfor %} 
+              {% endif %}
+              
+              
                 
                 <!--Block to be overridden by sub templates-->
                 {% block 'content' %}{% endblock %}

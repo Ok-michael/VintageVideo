@@ -14,8 +14,15 @@ from django.urls import reverse_lazy
 from django.db.models import Sum, F, DecimalField
 from .models import ShoppingCart
 from .models import ShoppingCartItem
+from .models import OrderItem
 from .forms import ShoppingCartFormSet
 from decimal import Decimal
+
+import json 
+import requests 
+from http import HTTPStatus 
+from django.core.serializers.json import DjangoJSONEncoder 
+from VVG import settings
 
 
 @login_required
@@ -121,3 +128,84 @@ def add_to_cart(request, game_id):
             f'The game {game.name} has been added to your cart'
         )
     return HttpResponseRedirect(reverse_lazy('user-cart'))
+
+
+def _prepare_order_data(cart): 
+    cart_items = ShoppingCartItem.objects.values_list( 
+        'game__name', 
+        'price_per_unit', 
+        'game__id', 
+        'quantity').filter(cart__id=cart.id) 
+    order = cart_items.aggregate( 
+        total_order=Sum(
+            F('price_per_unit') * F('quantity'), 
+            output_field=DecimalField(decimal_places=2)
+        ) 
+    ) 
+    order_items = [OrderItem(*x)._asdict() for x in cart_items] 
+    order_customer = { 
+        'customer_id': cart.user.id, 
+        'email': cart.user.email, 
+        'name': f'{cart.user.first_name} {cart.user.last_name}' 
+    } 
+    order_dict = { 
+        'items': order_items, 
+        'order_customer': order_customer, 
+        'total': order['total_order'] 
+    } 
+    return json.dumps(order_dict, cls=DjangoJSONEncoder)
+
+
+@login_required 
+def send_cart(request): 
+    cart = ShoppingCart.objects.get(user_id=request.user.id) 
+    data = _prepare_order_data(cart) 
+    headers = { 
+        'Authorization': f'Token {settings.ORDER_SERVICE_AUTHTOKEN}', 
+        'Content-type': 'application/json' 
+    } 
+    service_url = f'{settings.ORDER_SERVICE_BASEURL}/api/order/add/' 
+    response = requests.post( 
+        service_url, 
+        headers=headers, 
+        data=data) 
+    if HTTPStatus(response.status_code) is HTTPStatus.CREATED: 
+        request_data = json.loads(response.text) 
+        ShoppingCart.objects.empty(cart) 
+        messages.add_message( 
+            request, 
+            messages.INFO, 
+            ('We received your order!' 
+             'ORDER ID: {}').format(request_data['order_id'])) 
+    else: 
+        messages.add_message( 
+            request, 
+            messages.ERROR, 
+            ('Unfortunately, we could not receive your order.' 
+             ' Try again later.')) 
+    return HttpResponseRedirect(reverse_lazy('user-cart'))
+
+
+@login_required 
+def my_orders(request): 
+    headers = { 
+        'Authorization': f'Token {settings.ORDER_SERVICE_AUTHTOKEN}', 
+        'Content-type': 'application/json' 
+    } 
+    get_order_endpoint = f'/api/customer/{request.user.id}/orders/get/' 
+    service_url = f'{settings.ORDER_SERVICE_BASEURL}{get_order_endpoint}'
+    response = requests.get( 
+        service_url, 
+        headers=headers 
+    ) 
+    if HTTPStatus(response.status_code) is HTTPStatus.OK: 
+        request_data = json.loads(response.text) 
+        context = {'orders': request_data} 
+    else: 
+        messages.add_message( 
+            request, 
+            messages.ERROR, 
+            ('Unfortunately, we could not retrieve your orders.' 
+             ' Try again later.')) 
+        context = {'orders': []} 
+    return render(request, 'main/my-orders.html', context)
